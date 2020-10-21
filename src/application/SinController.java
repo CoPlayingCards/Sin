@@ -20,9 +20,10 @@ public class SinController {
     @FXML
     void initialize() {
     	assert base_pane != null : "fx:id=\"base_pane\" was not injected: check your FXML file 'Sin.fxml'.";
-    	CreateCardsList ccl = new CreateCardsList(24);
+    	CreateCardsList ccl = new CreateCardsList();
     	GridPane grid = ccl.getGrid();
     	AnchorPane.setBottomAnchor(grid, 20.0);
+    	AnchorPane.setRightAnchor(grid, 30.0);
         base_pane.getChildren().add(grid);
     }
 }

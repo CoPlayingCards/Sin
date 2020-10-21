@@ -5,16 +5,19 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 public class CreateCardsList {
+	private final int CARD_VALUE = 24;
 	private final int GRID_ROW_SIZE = 3;
 	private final int GRID_COLUMN_SIZE = 8;
+	private final int CARD_HEIGHT = 90;
+	private final int CARD_WEIGHT = 60;
 
 	private List<Button> buttonList = new ArrayList<>();
 	private GridPane grid;
 
-	public CreateCardsList(int value) {
+	public CreateCardsList() {
 		grid = new GridPane();
 		int number = 0;
-		for(int i = 0;i < value; i++) {
+		for(int i = 0;i < CARD_VALUE; i++) {
 			if(i % 2 == 0) {
 				number++;
 			}
@@ -28,6 +31,7 @@ public class CreateCardsList {
 					bt.setText("");
 				}
 			});
+			button.setPrefSize(CARD_WEIGHT, CARD_HEIGHT);
 			buttonList.add(button);
 		}
 		Collections.shuffle(buttonList);
