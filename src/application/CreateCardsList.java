@@ -3,6 +3,7 @@ package application;
 import java.util.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
 public class CreateCardsList {
 	private final int CARD_VALUE = 24;
@@ -29,6 +30,20 @@ public class CreateCardsList {
 					bt.setText(String.valueOf(tmp));
 				}else {
 					bt.setText("");
+				}
+
+				//ボタンリストを全探索して二枚のカードが同じ数字かを判定
+				Button openCard = null;
+				for(Button b:buttonList) {
+					if(openCard == null && !b.getText().isEmpty()) {
+						openCard = b;
+						continue;
+					}
+					if(openCard != null && b.getText().equals(openCard.getText())) {
+						openCard.setTextFill(Color.RED);
+						b.setTextFill(Color.RED);
+						break;
+					}
 				}
 			});
 			button.setPrefSize(CARD_WEIGHT, CARD_HEIGHT);
