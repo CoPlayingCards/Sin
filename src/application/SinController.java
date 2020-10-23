@@ -9,10 +9,12 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 public class SinController implements EventHandler<ActionEvent>{
 	private static int clickedValue = 0;
@@ -58,6 +60,8 @@ public class SinController implements EventHandler<ActionEvent>{
 			Button button = new Button("");
 			button.setOnAction(new SinController(number));
 			button.setPrefSize(CARD_WEIGHT, CARD_HEIGHT);
+			button.setFont(new Font(30));
+			button.setPadding(new Insets(0,0,0,0));
 			buttonList.add(button);
 		}
 		Collections.shuffle(buttonList);
@@ -75,6 +79,11 @@ public class SinController implements EventHandler<ActionEvent>{
     @Override
 	public void handle(ActionEvent event) {
     	Button button = (Button)event.getSource();
+
+    	if(button.getTextFill().equals(Color.RED)) {
+    		return;
+    	}
+
     	if(!button.getText().isEmpty()) {
     		button.setText("");
     		clickedValue--;
