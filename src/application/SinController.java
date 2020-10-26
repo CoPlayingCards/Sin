@@ -19,6 +19,7 @@ import javafx.scene.text.Font;
 public class SinController implements EventHandler<ActionEvent>{
 	private static int clickedValue = 0;
 	private static Button clickedButton;
+	private static Button wrongButton;
 
 	private final int number;
 
@@ -80,20 +81,29 @@ public class SinController implements EventHandler<ActionEvent>{
 	public void handle(ActionEvent event) {
     	Button button = (Button)event.getSource();
 
+    	//カードの色が赤（正解状態）だった場合
     	if(button.getTextFill().equals(Color.RED)) {
     		return;
     	}
 
+    	//カードが表向きだった場合
     	if(!button.getText().isEmpty()) {
-    		button.setText("");
-    		clickedValue--;
-    		return;
+    		if(clickedValue == 1) {
+    			return;
+    		}else {
+    			button.setText("");
+        		clickedValue--;
+        		return;
+    		}
     	}
 
     	if(clickedValue >= 2) {
-    		return;
+    		wrongButton.setText("");
+    		clickedButton.setText("");
+    		clickedValue = 0;
     	}
 
+    	//カードが裏向きになっている場合
     	button.setText(String.valueOf(this.number));
 
     	if(clickedValue == 0) {
@@ -105,6 +115,7 @@ public class SinController implements EventHandler<ActionEvent>{
     			clickedButton.setTextFill(Color.RED);
     			clickedValue = 0;
     		}else {
+    			wrongButton = button;
     			clickedValue++;
     		}
     	}
