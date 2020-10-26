@@ -1,30 +1,35 @@
 package application;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class SinController implements EventHandler<ActionEvent>{
-	private static int clickedValue = 0;
+	private static int clickedValue;
 	private static Button clickedButton;
 	private static Button wrongButton;
-	private static int answerCount = 0;
+	private static int answerCount;
 
 	private final int number;
 
@@ -44,8 +49,12 @@ public class SinController implements EventHandler<ActionEvent>{
 	public SinController() {
 		this(-1);
 	}
+
 	@FXML
     private AnchorPane base_pane;
+
+	@FXML
+    private Button return_button;
 
     @FXML
     private ResourceBundle resources;
@@ -56,6 +65,29 @@ public class SinController implements EventHandler<ActionEvent>{
     @FXML
     void initialize() {
     	assert base_pane != null : "fx:id=\"base_pane\" was not injected: check your FXML file 'Sin.fxml'.";
+    	assert return_button != null : "fx:id=\"return_button\" was not injected: check your FXML file 'Sin.fxml'.";
+
+    	clickedValue = 0;
+    	answerCount = 0;
+
+    	//戻るボタン
+    	return_button.setOnAction((e) -> {
+    		Scene s = ((Node)e.getSource()).getScene();
+    		Window window = s.getWindow();
+    		window.hide();
+
+    		try {
+    			Parent parent = FXMLLoader.load(getClass().getResource("GameList.fxml"));
+    			Scene scene = new Scene(parent);
+    			Stage stage = new Stage();
+    			stage.setScene(scene);
+    			stage.setTitle("ゲーム選択");
+    			stage.show();
+    		}catch(IOException ex) {
+    			ex.printStackTrace();
+    		}
+    	});
+
     	grid = new GridPane();
 		int number = 0;
 
@@ -82,10 +114,12 @@ public class SinController implements EventHandler<ActionEvent>{
 				grid.add(buttonList.get(i * GRID_COLUMN_SIZE + j), j, i);
 			}
 		}
+		grid.setHgap(7);
+		grid.setVgap(7);
 
 		//画面にグリッドを配置
-    	AnchorPane.setBottomAnchor(grid, 20.0);
-    	AnchorPane.setRightAnchor(grid, 30.0);
+    	AnchorPane.setBottomAnchor(grid, 40.0);
+    	AnchorPane.setRightAnchor(grid, 70.0);
         base_pane.getChildren().add(grid);
     }
 
@@ -132,7 +166,7 @@ public class SinController implements EventHandler<ActionEvent>{
     			clickedValue = 0;
     			answerCount += 2;
     			if(answerCount == CARD_VALUE) {
-    				showPopup();
+    				showResult();
     			}
     		}else {
     			wrongButton = button;
@@ -141,14 +175,14 @@ public class SinController implements EventHandler<ActionEvent>{
     	}
     }
 
-    private void showPopup() {
-    	Alert alrt = new Alert(AlertType.CONFIRMATION);
-		alrt.setTitle("クリア！");
-		alrt.setHeaderText(null);
-		alrt.setContentText("You Win!!");
-		Optional<ButtonType> result = alrt.showAndWait();
-		if (result.get() == ButtonType.OK) {
-		}
+    //
+    private void showResult() {
+    	Alert alrt = new Alert(AlertType.INFORMATION);
+		alrt.setTitle("");
+		alrt.setHeaderText("");
+		alrt.setContentText("クリアおめでとう！！\n"
+				+ "再挑戦する場合は一度戻ってから再挑戦してください！");
+		alrt.showAndWait();
     }
 
 }

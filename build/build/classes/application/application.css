@@ -1,0 +1,7 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+#base_pane{
+	-fx-background-color:rgba(0,128,0,0.8);
+}
+#card{
+	-fx-effect:  dropshadow(three-pass-box, rgb(0, 0, 0, 0.6), 5, 0.0, 2, 2);
+}

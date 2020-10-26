@@ -7,12 +7,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane prefHeight="384.0" prefWidth="549.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.GameListController">
    <children>
-      <Label alignment="CENTER" layoutX="154.0" layoutY="28.0" prefHeight="70.0" prefWidth="241.0" text="ゲーム選択">
+      <Label alignment="CENTER" layoutX="154.0" layoutY="28.0" prefHeight="70.0" prefWidth="241.0" text="Game Select">
          <font>
-            <Font size="36.0" />
+            <Font name="Impact" size="36.0" />
          </font>
       </Label>
       <GridPane layoutX="54.0" layoutY="119.0" prefHeight="239.0" prefWidth="441.0">
@@ -27,17 +26,17 @@
          <children>
             <Button fx:id="sin" mnemonicParsing="false" onAction="#onClick_1" prefHeight="60.0" prefWidth="448.0" text="神経衰弱">
                <font>
-                  <Font size="24.0" />
+                  <Font name="UD Digi Kyokasho N-B" size="24.0" />
                </font>
             </Button>
             <Button mnemonicParsing="false" onAction="#onClick_2" prefHeight="60.0" prefWidth="474.0" text="未実装" GridPane.rowIndex="1">
                <font>
-                  <Font size="24.0" />
+                  <Font name="UD Digi Kyokasho NK-B" size="24.0" />
                </font>
             </Button>
             <Button mnemonicParsing="false" onAction="#onClick_3" prefHeight="60.0" prefWidth="467.0" text="未実装" GridPane.rowIndex="2">
                <font>
-                  <Font size="24.0" />
+                  <Font name="UD Digi Kyokasho N-B" size="24.0" />
                </font>
             </Button>
          </children>

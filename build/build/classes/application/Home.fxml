@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="384.0" prefWidth="549.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.HomeController">
+   <children>
+      <Button fx:id="play_button" layoutX="191.0" layoutY="219.0" mnemonicParsing="false" onAction="#onClick" prefHeight="77.0" prefWidth="168.0" text="Play!">
+         <font>
+            <Font name="Freestyle Script" size="48.0" />
+         </font>
+      </Button>
+      <Label alignment="CENTER" layoutX="110.0" layoutY="45.0" prefHeight="96.0" prefWidth="330.0" text="Cards">
+         <font>
+            <Font name="Vivaldi Italic" size="96.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="#111010" />
+                  <Stop color="#f20d0d" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+   </children>
+</AnchorPane>
