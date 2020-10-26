@@ -53,11 +53,14 @@ public class SinController implements EventHandler<ActionEvent>{
     	assert base_pane != null : "fx:id=\"base_pane\" was not injected: check your FXML file 'Sin.fxml'.";
     	grid = new GridPane();
 		int number = 0;
+
+		//カードの作成
 		for(int i = 0;i < CARD_VALUE; i++) {
 			if(i % 2 == 0) {
 				number++;
 			}
 
+			//カードの大きさ、クリックイベントの追加
 			Button button = new Button("");
 			button.setOnAction(new SinController(number));
 			button.setPrefSize(CARD_WEIGHT, CARD_HEIGHT);
@@ -67,16 +70,20 @@ public class SinController implements EventHandler<ActionEvent>{
 		}
 		Collections.shuffle(buttonList);
 
+		//グリッドにカードを配置
 		for(int i = 0; i < GRID_ROW_SIZE;  i++) {
 			for(int j = 0; j < GRID_COLUMN_SIZE; j++) {
 				grid.add(buttonList.get(i * GRID_COLUMN_SIZE + j), j, i);
 			}
 		}
+
+		//画面にグリッドを配置
     	AnchorPane.setBottomAnchor(grid, 20.0);
     	AnchorPane.setRightAnchor(grid, 30.0);
         base_pane.getChildren().add(grid);
     }
 
+    //クリックイベント
     @Override
 	public void handle(ActionEvent event) {
     	Button button = (Button)event.getSource();
@@ -97,6 +104,7 @@ public class SinController implements EventHandler<ActionEvent>{
     		}
     	}
 
+    	//カードが二枚めくられている状態で他のカードがめくられた場合
     	if(clickedValue >= 2) {
     		wrongButton.setText("");
     		clickedButton.setText("");
@@ -110,6 +118,8 @@ public class SinController implements EventHandler<ActionEvent>{
     		clickedButton = button;
     		clickedValue++;
     	}else {
+
+    		//正誤判定
     		if(button.getText().equals(clickedButton.getText())) {
     			button.setTextFill(Color.RED);
     			clickedButton.setTextFill(Color.RED);
