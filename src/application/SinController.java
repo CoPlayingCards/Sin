@@ -4,13 +4,17 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -20,6 +24,7 @@ public class SinController implements EventHandler<ActionEvent>{
 	private static int clickedValue = 0;
 	private static Button clickedButton;
 	private static Button wrongButton;
+	private static int answerCount = 0;
 
 	private final int number;
 
@@ -66,6 +71,7 @@ public class SinController implements EventHandler<ActionEvent>{
 			button.setPrefSize(CARD_WEIGHT, CARD_HEIGHT);
 			button.setFont(new Font(30));
 			button.setPadding(new Insets(0,0,0,0));
+			button.setId("card");
 			buttonList.add(button);
 		}
 		Collections.shuffle(buttonList);
@@ -93,6 +99,13 @@ public class SinController implements EventHandler<ActionEvent>{
     		return;
     	}
 
+    	//カードが二枚めくられている状態で他のカードがめくられた場合
+    	if(clickedValue >= 2) {
+    		wrongButton.setText("");
+    		clickedButton.setText("");
+    		clickedValue = 0;
+    	}
+
     	//カードが表向きだった場合
     	if(!button.getText().isEmpty()) {
     		if(clickedValue == 1) {
@@ -102,13 +115,6 @@ public class SinController implements EventHandler<ActionEvent>{
         		clickedValue--;
         		return;
     		}
-    	}
-
-    	//カードが二枚めくられている状態で他のカードがめくられた場合
-    	if(clickedValue >= 2) {
-    		wrongButton.setText("");
-    		clickedButton.setText("");
-    		clickedValue = 0;
     	}
 
     	//カードが裏向きになっている場合
@@ -124,10 +130,25 @@ public class SinController implements EventHandler<ActionEvent>{
     			button.setTextFill(Color.RED);
     			clickedButton.setTextFill(Color.RED);
     			clickedValue = 0;
+    			answerCount += 2;
+    			if(answerCount == CARD_VALUE) {
+    				showPopup();
+    			}
     		}else {
     			wrongButton = button;
     			clickedValue++;
     		}
     	}
     }
+
+    private void showPopup() {
+    	Alert alrt = new Alert(AlertType.CONFIRMATION);
+		alrt.setTitle("クリア！");
+		alrt.setHeaderText(null);
+		alrt.setContentText("You Win!!");
+		Optional<ButtonType> result = alrt.showAndWait();
+		if (result.get() == ButtonType.OK) {
+		}
+    }
+
 }
