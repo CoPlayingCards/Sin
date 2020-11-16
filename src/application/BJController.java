@@ -2,16 +2,12 @@ package application;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.*;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,55 +16,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class BJController {
 	private static final int BJ_MAX_VALUE = 21;
 	private static final String WIN_MASSAGE = "かち";
-	private static final String LOSE_MASSAGE = "ハァ…ハァ…敗北者…？";
+	private static final String LOSE_MASSAGE = "#敗北";
 
-	private ArrayList<Card> cardList = new ArrayList<>();
-	private AtomicInteger card_index = new AtomicInteger(0);
-	private AtomicInteger player_grid_index = new AtomicInteger(0);
-	private AtomicInteger enemy_grid_index = new AtomicInteger(0);
-	private int enemy_point;
+	private Queue<Card> cardList;
 	private Card enemy_first_card;
 
-	private static class Card extends Label{
-
-		private final int number;
-		private static final int CARD_HEIGHT = 90;
-		private static final int CARD_WEIGHT = 60;
-
-		private Card(int number) {
-			super("" + number);
-			this.number = number;
-			setPrefSize(CARD_WEIGHT, CARD_HEIGHT);
-			setFont(new Font(30));
-			setPadding(new Insets(0,0,0,0));
-			setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), Insets.EMPTY)));
-			setAlignment(Pos.CENTER);
-		}
-
-		private int getNumber() {
-			return number > 10 ? 10 : number;
-		}
-
-		void turnItOver() {
-			if(getText().isEmpty()) {
-				setText("" + number);
-			}else {
-				setText("");
-			}
-		}
-	}
+	private Player player;
+	private Player dealer;
 
     @FXML
     private ResourceBundle resources;
@@ -105,34 +66,25 @@ public class BJController {
 
     @FXML
     void onClick_return(ActionEvent event) {
-    	Scene s = ((Node)event.getSource()).getScene();
-		Window window = s.getWindow();
-		window.hide();
-
-		try {
-			Parent parent = FXMLLoader.load(getClass().getResource("GameList.fxml"));
-			Scene scene = new Scene(parent);
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.setTitle("ゲーム選択");
-			stage.show();
-		}catch(IOException ex) {
-			ex.printStackTrace();
-		}
+    	showNewWindow(event, "GameList.fxml", "ゲーム選択");
     }
 
     @FXML
     void onClick_restart(ActionEvent event) {
+    	showNewWindow(event, "BlackJack.fxml", "BlackJack");
+    }
+
+    void showNewWindow(Event event, String resource, String title) {
     	Scene s = ((Node)event.getSource()).getScene();
 		Window window = s.getWindow();
 		window.hide();
 
 		try {
-			Parent parent = FXMLLoader.load(getClass().getResource("BlackJack.fxml"));
+			Parent parent = FXMLLoader.load(getClass().getResource(resource));
 			Scene scene = new Scene(parent);
 			Stage stage = new Stage();
 			stage.setScene(scene);
-			stage.setTitle("ブラックジャック");
+			stage.setTitle(title);
 			stage.show();
 		}catch(IOException e) {
 			e.printStackTrace();
@@ -152,27 +104,32 @@ public class BJController {
         assert return_button != null : "fx:id=\"return_button\" was not injected: check your FXML file 'BlackJack.fxml'.";
         assert restart_button != null : "fx:id=\"restart_button\" was not injected: check your FXML file 'BlackJack.fxml'.";
 
+        //ボタンの表示非表示
         add_button.setVisible(true);
     	stand_button.setVisible(true);
     	restart_button.setVisible(false);
 
+    	player = new Player(player_grid, playerpoint_label);
+    	dealer = new Player(enemy_grid, enemypoint_label);
+
+    	//カードを作成し、シャッフルする。
+    	ArrayList<Card> cards = new ArrayList<>();
         for(int i = 0 ; i < 4 ; i++) {
         	for(int j = 1 ; j < 14 ; j++) {
-        		cardList.add(new Card(j));
+        		cards.add(new Card(j));
         	}
         }
-        Collections.shuffle(cardList);
+        Collections.shuffle(cards);
+        cardList = new ArrayDeque<>(cards);
 
+       //ヒットボタンの挙動
         add_button.setOnAction(e -> {
-        	if(player_grid_index.get() > 7) {return;}
-        	Card card = cardList.get(card_index.get());
-        	int point = Integer.parseInt(playerpoint_label.getText()) + card.getNumber();
-        	playerpoint_label.setText(point + "");
-        	player_grid.add(card, player_grid_index.get(), 0);
-        	card_index.incrementAndGet();
-        	player_grid_index.incrementAndGet();
-        	if(point > BJ_MAX_VALUE) {battle();}
+        	if(player.cardCount() > 7) {return;}
+        	player.addCard(cardList.poll());
+        	if(player.getPoint() > BJ_MAX_VALUE) {battle();}
         });
+
+        //スタンドボタンの挙動
         stand_button.setOnAction(e -> {
         	battle();
         });
@@ -182,62 +139,45 @@ public class BJController {
 
     //初期配布
     private void cardDistribute() {
-    	int sum = 0;
-    	enemy_point = 0;
 
+    	//プレイヤー
     	for(int i = 0; i < 2; i++) {
-    		Card card = cardList.get(card_index.get());
-    		sum += card.getNumber();
-    		player_grid.add(card, i, 0);
-        	card_index.incrementAndGet();
+    		player.addCard(cardList.poll());
     	}
-    	playerpoint_label.setText("" + sum);
 
-    	//敵
-    	Card card = cardList.get(card_index.get());
-    	card.turnItOver();
-    	enemy_first_card = card;
-    	enemy_point += card.getNumber();
-    	enemy_grid.add(card, 0, 0);
+    	//ディーラー
+    	enemy_first_card = cardList.poll();
+    	enemy_first_card.turnItOver();
+    	dealer.addCard(enemy_first_card);
+    	dealer.addCard(cardList.poll());
 
-    	card_index.incrementAndGet();
-    	card = cardList.get(card_index.get());
-    	enemy_point += card.getNumber();
-    	enemy_grid.add(card, 1, 0);
-    	card_index.incrementAndGet();
-
-    	player_grid_index.set(2);
-    	enemy_grid_index.set(2);
     }
 
     private void enemyTurn() {
-    	Card card;
-    	while(enemy_point < 17) {
-    		card = cardList.get(card_index.get());
-    		card_index.incrementAndGet();
-    		enemy_point += card.getNumber();
-    		enemy_grid.add(card, enemy_grid_index.get(), 0);
-    		enemy_grid_index.incrementAndGet();
+    	while(dealer.getPoint() < 17) {
+    		dealer.addCard(cardList.poll());
     	}
     }
 
+    //点数勝負
     private void battle() {
     	enemyTurn();
 
     	enemy_first_card.turnItOver();
 
-    	int player_point = Integer.parseInt(playerpoint_label.getText());
-    	String result = "あなた：" + player_point + "\nディーラー：" + enemy_point + "\n";
+    	int player_point = player.getPoint();
+    	String result = "あなた：" + player_point + "\nディーラー：" + dealer.getPoint() + "\n";
 
     	if(player_point > BJ_MAX_VALUE) {
     		result += LOSE_MASSAGE;
-    	}else if(enemy_point > BJ_MAX_VALUE) {
+    	}else if(dealer.getPoint() > BJ_MAX_VALUE) {
     		result += WIN_MASSAGE;
     	}else {
-    		result += enemy_point < player_point ?
+    		result += dealer.getPoint() < player_point ?
         			 WIN_MASSAGE : LOSE_MASSAGE ;
     	}
 
+    	//ボタンの表示非表示
     	add_button.setVisible(false);
     	stand_button.setVisible(false);
     	restart_button.setVisible(true);

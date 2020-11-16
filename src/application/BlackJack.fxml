@@ -58,7 +58,10 @@
          <font>
             <Font name="System Bold" size="36.0" />
          </font></Label>
-      <Label fx:id="enemypoint_label" layoutX="786.0" layoutY="76.0" prefHeight="70.0" prefWidth="79.0" />
+      <Label fx:id="enemypoint_label" layoutX="727.0" layoutY="36.0" prefHeight="151.0" prefWidth="108.0">
+         <font>
+            <Font size="36.0" />
+         </font></Label>
       <Button fx:id="return_button" layoutX="25.0" layoutY="41.0" mnemonicParsing="false" onAction="#onClick_return" prefHeight="60.0" prefWidth="108.0" text="←戻る">
          <font>
             <Font size="24.0" />
