@@ -28,29 +28,34 @@ public class GameListController {
 
     @FXML
     void onClick_1(Event event) {
+    	showNewWindow(event, "Sin.fxml", "神経衰弱");
+    }
+
+    @FXML
+    void onClick_2(Event event) {
+    	showNewWindow(event, "BlackJack.fxml", "BlackJack");
+    }
+
+    @FXML
+    void onClick_3(Event event) {
+
+    }
+
+    void showNewWindow(Event event, String resource, String title) {
     	Scene s = ((Node)event.getSource()).getScene();
 		Window window = s.getWindow();
 		window.hide();
 
 		try {
-			Parent parent = FXMLLoader.load(getClass().getResource("Sin.fxml"));
+			Parent parent = FXMLLoader.load(getClass().getResource(resource));
 			Scene scene = new Scene(parent);
 			Stage stage = new Stage();
 			stage.setScene(scene);
-			stage.setTitle("ゲーム選択");
+			stage.setTitle(title);
 			stage.show();
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
-    }
-
-    @FXML
-    void onClick_2(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onClick_3(ActionEvent event) {
 
     }
 

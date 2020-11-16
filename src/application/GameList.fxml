@@ -29,7 +29,7 @@
                   <Font name="UD Digi Kyokasho N-B" size="24.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#onClick_2" prefHeight="60.0" prefWidth="474.0" text="未実装" GridPane.rowIndex="1">
+            <Button mnemonicParsing="false" onAction="#onClick_2" prefHeight="60.0" prefWidth="474.0" text="ブラックジャック" GridPane.rowIndex="1">
                <font>
                   <Font name="UD Digi Kyokasho NK-B" size="24.0" />
                </font>
