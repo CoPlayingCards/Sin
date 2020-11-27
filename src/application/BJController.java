@@ -22,8 +22,8 @@ import javafx.stage.Window;
 
 public class BJController {
 	private static final int BJ_MAX_VALUE = 21;
-	private static final String WIN_MASSAGE = "かち";
-	private static final String LOSE_MASSAGE = "#敗北";
+	private static final String WIN_MASSAGE = "You Win!!";
+	private static final String LOSE_MASSAGE = "You Lose...";
 
 	private Queue<Card> cardList;
 	private Card enemy_first_card;
@@ -109,6 +109,8 @@ public class BJController {
     	stand_button.setVisible(true);
     	restart_button.setVisible(false);
 
+    	enemypoint_label.setVisible(false);
+
     	player = new Player(player_grid, playerpoint_label);
     	dealer = new Player(enemy_grid, enemypoint_label);
 
@@ -164,6 +166,7 @@ public class BJController {
     	enemyTurn();
 
     	enemy_first_card.turnItOver();
+    	enemypoint_label.setVisible(true);
 
     	int player_point = player.getPoint();
     	String result = "あなた：" + player_point + "\nディーラー：" + dealer.getPoint() + "\n";
