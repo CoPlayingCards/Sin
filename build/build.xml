@@ -20,43 +20,43 @@
 		<mkdir dir="externalLibs" />
 	
 		<copy todir="externalLibs">
-			<fileset dir="C:\jarfiles\javafx\javafx-sdk-11.0.2\lib">
+			<fileset dir="C:\workspace\Sin\src\res">
 				<filename name="javafx.base.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
-			<fileset dir="C:\jarfiles\javafx\javafx-sdk-11.0.2\lib">
-				<filename name="javafx.graphics.jar"/>
-			</fileset>
-		</copy>
-		<copy todir="externalLibs">
-			<fileset dir="C:\jarfiles\javafx\javafx-sdk-11.0.2\lib">
-				<filename name="javafx.swing.jar"/>
-			</fileset>
-		</copy>
-		<copy todir="externalLibs">
-			<fileset dir="C:\jarfiles\javafx\javafx-sdk-11.0.2\lib">
+			<fileset dir="C:\workspace\Sin\src\res">
 				<filename name="javafx-swt.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
-			<fileset dir="C:\jarfiles\javafx\javafx-sdk-11.0.2\lib">
-				<filename name="javafx.web.jar"/>
-			</fileset>
-		</copy>
-		<copy todir="externalLibs">
-			<fileset dir="C:\jarfiles\javafx\javafx-sdk-11.0.2\lib">
+			<fileset dir="C:\workspace\Sin\src\res">
 				<filename name="javafx.media.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
-			<fileset dir="C:\jarfiles\javafx\javafx-sdk-11.0.2\lib">
+			<fileset dir="C:\workspace\Sin\src\res">
+				<filename name="javafx.controls.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\workspace\Sin\src\res">
+				<filename name="javafx.web.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\workspace\Sin\src\res">
 				<filename name="javafx.fxml.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
-			<fileset dir="C:\jarfiles\javafx\javafx-sdk-11.0.2\lib">
-				<filename name="javafx.controls.jar"/>
+			<fileset dir="C:\workspace\Sin\src\res">
+				<filename name="javafx.graphics.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\workspace\Sin\src\res">
+				<filename name="javafx.swing.jar"/>
 			</fileset>
 		</copy>
 	
@@ -152,7 +152,7 @@
 			<manifest>
 				<attribute name="Implementation-Vendor" value="f18aa011"/>
 				<attribute name="Implementation-Title" value="Cards"/>
-				<attribute name="Implementation-Version" value="1.0"/>
+				<attribute name="Implementation-Version" value="2.0"/>
 				<attribute name="JavaFX-Feature-Proxy" value="None"/>
 			</manifest>
 		</fx:jar>
